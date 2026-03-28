@@ -6,99 +6,62 @@
 <title>Happy Birthday Ashmita ❤️</title>
 
 <style>
-
-/* Background */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow: hidden;
     color: white;
+    text-align: center;
 }
 
 /* Heading */
 h1 {
     margin-top: 20px;
-    font-size: 2.5rem;
-    text-align: center;
-    animation: glow 2s infinite alternate;
+    font-size: 2.2rem;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px white; }
-    to { text-shadow: 0 0 25px #ff4081; }
-}
-
-/* Glass Card */
-.container {
-    width: 90%;
-    max-width: 400px;
-    backdrop-filter: blur(10px);
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-}
-
-/* Slideshow */
-.slideshow {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.slide {
+/* Floating Images */
+.image {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.slide.active {
-    opacity: 1;
-}
-
-.slide img {
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 130px;
+    border-radius: 15px;
     object-fit: cover;
+    opacity: 0;
+    animation: fly 2s forwards;
 }
 
-/* Message */
-.message {
-    margin-top: 15px;
-    font-size: 1rem;
-    text-align: center;
-    line-height: 1.6;
+@keyframes fly {
+    to {
+        opacity: 1;
+        transform: translate(0,0);
+    }
 }
 
-/* Button */
-button {
-    margin-top: 15px;
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 25px;
-    background: white;
-    color: #ff4081;
-    font-size: 16px;
+/* Teddy */
+.teddy {
+    width: 120px;
+    margin-top: 20px;
     cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 500px) {
-    h1 {
-        font-size: 1.8rem;
-    }
-    .slideshow {
-        height: 300px;
-    }
+/* Cake Section */
+#cakeSection {
+    display: none;
+    margin-top: 30px;
+}
+
+.cake {
+    font-size: 80px;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 </style>
@@ -108,54 +71,62 @@ button {
 
 <h1>🎉 Happy Birthday Ashmita ❤️</h1>
 
-<div class="container">
+<!-- Teddy -->
+<img src="images.png" class="teddy" onclick="playSong()" title="Click me 🧸">
 
-    <!-- Slideshow -->
-    <div class="slideshow">
-        <div class="slide active"><img src="img1.jpg"></div>
-        <div class="slide"><img src="img2.jpg"></div>
-        <div class="slide"><img src="img3.jpg"></div>
-        <div class="slide"><img src="img4.jpg"></div>
-        <div class="slide"><img src="img5.jpg"></div>
-        <div class="slide"><img src="img6.jpg"></div>
-        <div class="slide"><img src="img7.jpg"></div>
-    </div>
+<p>Click the teddy 🧸</p>
 
-    <!-- Message -->
-    <div class="message">
-        Happy Birthday to the one who makes every moment brighter ✨<br>
-May your life be filled with endless happiness and success 🎉<br>
-You’re not just a friend, you’re a piece of my heart ❤️<br>
-Cheers to more memories, laughter, and unforgettable moments 🥂<br>
-    </div>
-
-    <!-- Button -->
-    <button onclick="playMusic()">Play Music 🎵</button>
-
+<!-- Cake Section -->
+<div id="cakeSection">
+    <div class="cake">🎂🕯️</div>
+    <button onclick="blowCandle()">Blow Candle 🎂</button>
 </div>
 
 <!-- Audio -->
-<audio id="music" loop>
+<audio id="song">
     <source src="birthday.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-/* Slideshow */
-let slides = document.querySelectorAll(".slide");
-let index = 0;
+/* Images flying from corners */
+const positions = [
+    "translate(-500px,-500px)",
+    "translate(500px,-500px)",
+    "translate(-500px,500px)",
+    "translate(500px,500px)",
+    "translate(-500px,0)",
+    "translate(500px,0)",
+    "translate(0,-500px)",
+    "translate(0,500px)",
+    "translate(-300px,300px)",
+    "translate(300px,-300px)"
+];
 
-function showSlides() {
-    slides[index].classList.remove("active");
-    index = (index + 1) % slides.length;
-    slides[index].classList.add("active");
+for(let i=1;i<=12;i++){
+    let img = document.createElement("img");
+    img.src = "img"+i+".jpg";
+    img.className = "image";
+
+    img.style.left = Math.random()*80 + "%";
+    img.style.top = Math.random()*80 + "%";
+    img.style.transform = positions[i-1];
+
+    img.style.animationDelay = (i*0.5)+"s";
+
+    document.body.appendChild(img);
 }
 
-setInterval(showSlides, 2500);
+/* Teddy click */
+function playSong(){
+    document.getElementById("song").play();
+    document.getElementById("cakeSection").style.display="block";
+}
 
-/* Music */
-function playMusic() {
-    document.getElementById("music").play();
+/* Blow candle */
+function blowCandle(){
+    document.querySelector(".cake").innerHTML="🎂✨";
+    alert("Happy Birthday Ashmita ❤️🎉");
 }
 
 </script>
